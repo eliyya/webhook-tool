@@ -39,8 +39,7 @@ export default function Webhook({ webhooks, saveWebhook }) {
                 .then(r => r.json())
                 .then(
                     w =>
-                        (w.name !== webhook.name ||
-                            w.avatar !== webhook.avatar) &&
+                        (w.name !== webhook.name || w.avatar !== webhook.avatar) &&
                         (setWebhook({ ...w, url: webhook.url }) ||
                             saveWebhook({ ...w, url: webhook.url }))
                 )
@@ -55,15 +54,15 @@ export default function Webhook({ webhooks, saveWebhook }) {
             fetch(webhook.url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     content,
                     embeds: embeds.map(e => ({
                         ...e,
-                        color: parseInt(e.color.slice(1), 16)
-                    }))
-                })
+                        color: parseInt(e.color.slice(1), 16),
+                    })),
+                }),
             })
                 .then(console.log) //TODO: lanzar mensaje de sucess
                 .catch(e => console.error(`${e.message}`)) //TODO: lanzar mensaje de error
@@ -74,17 +73,13 @@ export default function Webhook({ webhooks, saveWebhook }) {
         new Promise(async (resolve, reject) => {
             const input = e.target.parentNode.querySelector('input')
             if (!input.value) return reject(new Error('Value expected'))
-            if (!/^\d{18,19}$/.test(input.value))
-                return reject(new Error('Id expected'))
+            if (!/^\d{18,19}$/.test(input.value)) return reject(new Error('Id expected'))
             const message = await fetch(
                 `https://discord.com/api/webhooks/${webhook.id}/${webhook.token}/messages/${input.value}`
             ).then(r => r.json())
             updateContent(message.content)
             setMessageId(input.value)
-            if (
-                message.name !== webhook.name ||
-                message.avatar !== webhook.avatar
-            )
+            if (message.name !== webhook.name || message.avatar !== webhook.avatar)
                 saveWebhook({ ...message, url: webhook.url })
         })
 
@@ -98,15 +93,15 @@ export default function Webhook({ webhooks, saveWebhook }) {
             {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     content,
                     embeds: embeds.map(e => ({
                         ...e,
-                        color: parseInt(e.color.slice(1), 16)
-                    }))
-                })
+                        color: parseInt(e.color.slice(1), 16),
+                    })),
+                }),
             }
         )
             .then(console.log) //TODO: lanzar mensaje de sucess
@@ -136,8 +131,9 @@ export default function Webhook({ webhooks, saveWebhook }) {
                     embeds={embeds}
                     username={webhook?.name ?? 'Spidey Bot'}
                     avatar={
-                        webhook?.avatar ??
-                        'https://cdn.discordapp.com/embed/avatars/0.png'
+                        webhook?.avatar
+                            ? `https://cdn.discordapp.com/avatars/${webhook.id}/${webhook.avatar}.webp`
+                            : 'https://cdn.discordapp.com/embed/avatars/0.png'
                     }
                     content={content}
                 />

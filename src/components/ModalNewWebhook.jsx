@@ -5,9 +5,7 @@ export default function ModalNewWebhook({ saveWebhook }) {
         e.preventDefault()
         const $url = e.target.querySelector('input')
         if (
-            /https:\/\/discord(app)?\.com\/api\/webhooks\/\d{18,19}\/.+/.test(
-                $url.value
-            )
+            /https:\/\/(canary\.)?discord(app)?\.com\/api\/webhooks\/\d{18,19}\/.+/.test($url.value)
         ) {
             fetch($url.value)
                 .then(r => r.json())
@@ -20,14 +18,12 @@ export default function ModalNewWebhook({ saveWebhook }) {
                     if (r.message === 'Failed to fetch') {
                         saveWebhook({
                             url: $url.value,
-                            id: new URL($url.value).pathname.split('/')[3]
+                            id: new URL($url.value).pathname.split('/')[3],
                         })
                         const $dialog = document.querySelector('dialog')
                         $dialog.close()
                     } else {
-                        $url.setCustomValidity(
-                            'This is not a valid Discord Webhook URL'
-                        )
+                        $url.setCustomValidity('This is not a valid Discord Webhook URL')
                     }
                 })
         } else {
@@ -46,14 +42,13 @@ export default function ModalNewWebhook({ saveWebhook }) {
     }
 
     return (
-        <dialog id='newWebhook' className='bg-transparent w-1/3'>
-            <form
-                onSubmit={onSubmit}
-                className='flex flex-col bg-[#36393f] rounded-xl'>
-                <h2 className='font-medium m-4 text-2xl'>Add webhook</h2>
+        <dialog id='newWebhook' className='w-1/3 bg-transparent'>
+            <form onSubmit={onSubmit} className='flex flex-col bg-[#36393f] rounded-xl'>
+                <h2 className='m-4 text-2xl font-medium'>Add webhook</h2>
                 <label
                     htmlFor='url'
-                    className='text-xs uppercase leading-4 font-medium text-[#b9bbbe] px-4 pt-0 pb-2'>
+                    className='text-xs uppercase leading-4 font-medium text-[#b9bbbe] px-4 pt-0 pb-2'
+                >
                     Webhook URL
                 </label>
                 <input

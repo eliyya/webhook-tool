@@ -7,8 +7,9 @@ export default function WebhookCard({ webhookAvatar, webhookName, webhookId }) {
                 <img
                     className='w-1/2 mb-4 rounded-full'
                     src={
-                        webhookAvatar ??
-                        'https://cdn.discordapp.com/embed/avatars/0.png'
+                        webhookAvatar
+                            ? `https://cdn.discordapp.com/avatars/${webhookId}/${webhookAvatar}.webp`
+                            : 'https://cdn.discordapp.com/embed/avatars/0.png'
                     }
                     alt='WebHook Avatar'
                 />
@@ -26,7 +27,8 @@ export function NewWebhook() {
     return (
         <article
             className='h-[300px] w-[235px] border-2 border-[#2f3136] border-solid rounded-xl m-2 flex flex-wrap items-center content-center justify-center flex-col hover:bg-[#2f3136]'
-            onClick={onClick}>
+            onClick={onClick}
+        >
             <h2>+</h2>
         </article>
     )
