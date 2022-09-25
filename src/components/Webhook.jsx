@@ -29,7 +29,7 @@ export function NewWebhook() {
             className='h-[300px] w-[235px] border-2 border-[#2f3136] border-solid rounded-xl m-2 flex flex-wrap items-center content-center justify-center flex-col hover:bg-[#2f3136]'
             onClick={onClick}
         >
-            <h2>+</h2>
+            <h2 className='text-7xl'>+</h2>
         </article>
     )
 }

@@ -46,13 +46,11 @@ const MessageHeader = ({ avatar, username }) => (
     </div>
 )
 
-const MessageContent = ({ content }) => (
-    <div className='whitespace-pre-wrap leading-[1.375rem]'>{content}</div>
-)
+const MessageContent = ({ content }) => <div className='whitespace-pre-wrap leading-[1.375rem]'>{content}</div>
 
 /**
  *
- * @param {{description?:string; title?:string; id:string; color?:number; author:{name:string; url:string}}} param0
+ * @param {{description?:string; title?:string; id:string; color?:number; author:{name:string; url:string; icon_url:string}}} param0
  * @returns
  */
 const Embed = ({ description, title, color, author }) => (
@@ -65,16 +63,31 @@ const Embed = ({ description, title, color, author }) => (
             {author?.name && (
                 <div style={{ gridColumn: '1/2' }} className='flex items-center m-0 mt-2'>
                     {author.name ? (
-                        <a
-                            href={author.url}
-                            className='text-sm text-[#dcddde] font-medium inline-block'
-                        >
-                            {author.name}
-                        </a>
+                        <>
+                            {author.icon_url && (
+                                <img
+                                    src={author.icon_url}
+                                    alt='Author Avatar'
+                                    className='object-contain w-6 h-6 m-0 mr-2 rounded-full'
+                                />
+                            )}
+                            <a href={author.url} className='text-sm text-[#dcddde] font-medium inline-block'>
+                                {author.name}
+                            </a>
+                        </>
                     ) : (
-                        <span className='text-sm text-[#dcddde] font-medium inline-block decoration-solid underline'>
-                            {author.name}
-                        </span>
+                        <>
+                            {author.icon_url && (
+                                <img
+                                    src={author.icon_url}
+                                    alt='Author Avatar'
+                                    className='object-contain w-6 h-6 m-0 mr-2 rounded-full'
+                                />
+                            )}
+                            <span className='text-sm text-[#dcddde] font-medium inline-block decoration-solid underline'>
+                                {author.name}
+                            </span>
+                        </>
                     )}
                 </div>
             )}
