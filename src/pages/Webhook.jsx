@@ -40,8 +40,7 @@ export default function Webhook({ webhooks, saveWebhook }) {
                 .then(
                     w =>
                         (w.name !== webhook.name || w.avatar !== webhook.avatar) &&
-                        (setWebhook({ ...w, url: webhook.url }) ||
-                            saveWebhook({ ...w, url: webhook.url }))
+                        (setWebhook({ ...w, url: webhook.url }) || saveWebhook({ ...w, url: webhook.url }))
                 )
                 .catch(e => null)
     }, [webhook, saveWebhook])
@@ -54,15 +53,15 @@ export default function Webhook({ webhooks, saveWebhook }) {
             fetch(webhook.url, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     content,
                     embeds: embeds.map(e => ({
                         ...e,
-                        color: parseInt(e.color.slice(1), 16),
-                    })),
-                }),
+                        color: parseInt(e.color?.slice(1) ?? '5865f2', 16)
+                    }))
+                })
             })
                 .then(console.log) //TODO: lanzar mensaje de sucess
                 .catch(e => console.error(`${e.message}`)) //TODO: lanzar mensaje de error
@@ -88,22 +87,19 @@ export default function Webhook({ webhooks, saveWebhook }) {
         const url = document.querySelector('#url')
         // TODO: lanzar mensaje de url error
         if (!content || !messageId || !url.validity.valid) return
-        fetch(
-            `https://discord.com/api/webhooks/${webhook.id}/${webhook.token}/messages/${messageId}`,
-            {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    content,
-                    embeds: embeds.map(e => ({
-                        ...e,
-                        color: parseInt(e.color.slice(1), 16),
-                    })),
-                }),
-            }
-        )
+        fetch(`https://discord.com/api/webhooks/${webhook.id}/${webhook.token}/messages/${messageId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                content,
+                embeds: embeds.map(e => ({
+                    ...e,
+                    color: parseInt(e.color.slice(1), 16)
+                }))
+            })
+        })
             .then(console.log) //TODO: lanzar mensaje de sucess
             .catch(e => null) //TODO: lanzar mensaje de error
     }
